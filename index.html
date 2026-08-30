@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ο Επισκέπτης Στις Τρεις</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="menu">
+    <h1>Ο Επισκέπτης Στις Τρεις</h1>
+    <p class="subtitle">ένα σύντομο παιχνίδι τρόμου</p>
+    <button id="startBtn">Έναρξη</button>
+    <div class="controlsInfo">
+      <p>Βελάκια — κίνηση &nbsp;|&nbsp; Ποντίκι — κοίταγμα &nbsp;|&nbsp; Space — άλμα</p>
+      <p>Shift — σκύψιμο &nbsp;|&nbsp; E — αλληλεπίδραση &nbsp;|&nbsp; Esc — παύση</p>
+    </div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <div id="crosshair"></div>
+    <div id="interactPrompt" class="hidden"></div>
+    <div id="objective" class="hidden"></div>
+    <div id="topBanner" class="hidden"></div>
+    <div id="dialogueBox" class="hidden">
+      <div id="dialogueSpeaker"></div>
+      <div id="dialogueText"></div>
+      <div id="dialogueHint">Πάτα E</div>
+    </div>
+  </div>
+
+  <div id="fadeLayer"></div>
+  <div id="scareFlash"></div>
+  <div id="centerText" class="hidden"></div>
+
+  <div id="endScreen" class="hidden">
+    <h1 id="endTitle"></h1>
+    <p id="endSubtitle"></p>
+    <button id="restartBtn">Παίξε ξανά</button>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
