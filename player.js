@@ -37,10 +37,14 @@ export class Player {
     });
     window.addEventListener('mousemove', (e) => {
       if (!this.locked) return;
-      this.yaw -= e.movementX * 0.0022;
-      this.pitch -= e.movementY * 0.0022;
-      this.pitch = Math.max(-1.3, Math.min(1.3, this.pitch));
+      this.look(e.movementX, e.movementY);
     });
+  }
+
+  look(dx, dy) {
+    this.yaw -= dx * 0.0022;
+    this.pitch -= dy * 0.0022;
+    this.pitch = Math.max(-1.3, Math.min(1.3, this.pitch));
   }
 
   lock() { this.dom.requestPointerLock(); }

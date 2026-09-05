@@ -6,6 +6,9 @@ import { Policeman } from './policeman.js';
 import { Story } from './story.js';
 import { UI } from './ui.js';
 import * as audio from './audio.js';
+import { isTouchDevice, setupTouchControls } from './touch.js';
+
+const touchMode = isTouchDevice();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.05, 100);
@@ -72,6 +75,12 @@ function showKnife() {
 const game = { scene, camera, renderer, world, player, visitor, policeman, ui: UI, setTimeOfDay, showKnife };
 const story = new Story(game);
 
+if (touchMode) {
+  setupTouchControls(player, story);
+  document.getElementById('controlsDesktop').classList.add('hidden');
+  document.getElementById('controlsMobile').classList.remove('hidden');
+}
+
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -83,17 +92,20 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape' && player.locked) player.unlock();
 });
 
-renderer.domElement.addEventListener('click', () => {
-  if (!UI.endScreen.classList.contains('hidden')) return;
-  player.lock();
-});
+if (!touchMode) {
+  renderer.domElement.addEventListener('click', () => {
+    if (!UI.endScreen.classList.contains('hidden')) return;
+    player.lock();
+  });
+}
 
 document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('menu').classList.add('hidden');
   document.getElementById('hud').classList.remove('hidden');
+  if (touchMode) document.getElementById('mobileControls').classList.remove('hidden');
   audio.initAudio();
   audio.startAmbient();
-  player.lock();
+  if (!touchMode) player.lock();
   story.run();
 });
 
@@ -122,3 +134,57 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+
+function isRunningStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+let deferredInstallPrompt = null;
+let installBannerDismissed = false;
+
+function maybeShowInstallBanner() {
+  const banner = document.getElementById('installBanner');
+  if (!banner || installBannerDismissed || isRunningStandalone()) return;
+  if (!deferredInstallPrompt && !isIOSDevice) return;
+  const text = document.getElementById('installText');
+  const actionBtn = document.getElementById('installActionBtn');
+  if (deferredInstallPrompt) {
+    text.textContent = '📲 Εγκατάστησε το παιχνίδι σαν εφαρμογή!';
+    actionBtn.style.display = 'inline-block';
+  } else {
+    text.textContent = '📲 Πάτα Share ⬆️, μετά "Add to Home Screen".';
+    actionBtn.style.display = 'none';
+  }
+  banner.classList.remove('hidden');
+}
+
+document.getElementById('installActionBtn').addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  document.getElementById('installBanner').classList.add('hidden');
+});
+document.getElementById('installDismissBtn').addEventListener('click', () => {
+  installBannerDismissed = true;
+  document.getElementById('installBanner').classList.add('hidden');
+});
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  installBannerDismissed = false;
+  maybeShowInstallBanner();
+});
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').classList.add('hidden');
+});
+
+if (isIOSDevice && !isRunningStandalone()) maybeShowInstallBanner();
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}

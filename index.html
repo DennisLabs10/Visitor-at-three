@@ -2,7 +2,16 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
   <title>Ο Επισκέπτης Στις Τρεις</title>
+  <meta name="theme-color" content="#1a1410" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Επισκέπτης" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="stylesheet" href="style.css" />
   <script type="importmap">
     {
@@ -18,9 +27,18 @@
     <h1>Ο Επισκέπτης Στις Τρεις</h1>
     <p class="subtitle">ένα σύντομο παιχνίδι τρόμου</p>
     <button id="startBtn">Έναρξη</button>
-    <div class="controlsInfo">
+    <div class="controlsInfo" id="controlsDesktop">
       <p>Βελάκια — κίνηση &nbsp;|&nbsp; Ποντίκι — κοίταγμα &nbsp;|&nbsp; Space — άλμα</p>
       <p>Shift — σκύψιμο &nbsp;|&nbsp; E — αλληλεπίδραση &nbsp;|&nbsp; Esc — παύση</p>
+    </div>
+    <div class="controlsInfo hidden" id="controlsMobile">
+      <p>Αριστερό joystick — κίνηση &nbsp;|&nbsp; Σύρε δεξιά οθόνη — κοίταγμα</p>
+      <p>↑ — άλμα &nbsp;|&nbsp; E — αλληλεπίδραση</p>
+    </div>
+    <div id="installBanner" class="hidden">
+      <span id="installText"></span>
+      <button id="installActionBtn">Install</button>
+      <button id="installDismissBtn">✕</button>
     </div>
   </div>
 
@@ -44,6 +62,13 @@
     <h1 id="endTitle"></h1>
     <p id="endSubtitle"></p>
     <button id="restartBtn">Παίξε ξανά</button>
+  </div>
+
+  <div id="mobileControls" class="hidden">
+    <div id="lookZone"></div>
+    <div id="joyBase"><div id="joyThumb"></div></div>
+    <button id="jumpBtn">↑</button>
+    <button id="interactBtnMobile">E</button>
   </div>
 
   <script type="module" src="main.js"></script>
