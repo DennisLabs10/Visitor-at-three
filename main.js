@@ -77,7 +77,6 @@ const story = new Story(game);
 
 if (touchMode) {
   setupTouchControls(player, story);
-  document.getElementById('controlsDesktop').classList.add('hidden');
   document.getElementById('controlsMobile').classList.remove('hidden');
 }
 
@@ -92,12 +91,10 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape' && player.locked) player.unlock();
 });
 
-if (!touchMode) {
-  renderer.domElement.addEventListener('click', () => {
-    if (!UI.endScreen.classList.contains('hidden')) return;
-    player.lock();
-  });
-}
+renderer.domElement.addEventListener('click', () => {
+  if (!UI.endScreen.classList.contains('hidden')) return;
+  player.lock();
+});
 
 document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('menu').classList.add('hidden');
@@ -105,7 +102,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   if (touchMode) document.getElementById('mobileControls').classList.remove('hidden');
   audio.initAudio();
   audio.startAmbient();
-  if (!touchMode) player.lock();
+  player.lock();
   story.run();
 });
 

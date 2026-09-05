@@ -125,10 +125,11 @@ canvas { display: block; }
   border-radius: 50%; background: rgba(255,255,255,0.35);
 }
 
-#jumpBtn, #interactBtnMobile {
-  position: absolute; width: 68px; height: 68px; border-radius: 50%;
+#crouchBtn, #jumpBtn, #interactBtnMobile {
+  position: absolute; width: 64px; height: 64px; border-radius: 50%;
   background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.25);
-  color: #e8e2d8; font-size: 1.3em; touch-action: none;
+  color: #e8e2d8; font-size: 1.2em; touch-action: none;
 }
+#crouchBtn { right: 112px; bottom: 26px; }
 #jumpBtn { right: 34px; bottom: 116px; }
 #interactBtnMobile { right: 34px; bottom: 26px; }

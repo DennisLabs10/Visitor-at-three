@@ -47,7 +47,7 @@ export class Player {
     this.pitch = Math.max(-1.3, Math.min(1.3, this.pitch));
   }
 
-  lock() { this.dom.requestPointerLock(); }
+  lock() { if (this.dom.requestPointerLock) this.dom.requestPointerLock(); }
   unlock() { document.exitPointerLock(); }
 
   teleport(pos, yaw = null) {
@@ -107,8 +107,8 @@ export class Player {
       const len = Math.hypot(mx, mz);
       mx /= len; mz /= len;
       const sin = Math.sin(this.yaw), cos = Math.cos(this.yaw);
-      const worldX = mx * cos - mz * sin;
-      const worldZ = mx * sin + mz * cos;
+      const worldX = mx * cos + mz * sin;
+      const worldZ = mz * cos - mx * sin;
 
       const px = this.holder.position.x;
       const pz = this.holder.position.z;

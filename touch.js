@@ -9,6 +9,7 @@ export function setupTouchControls(player, story) {
   const joyThumb = document.getElementById('joyThumb');
   const lookZone = document.getElementById('lookZone');
   const jumpBtn = document.getElementById('jumpBtn');
+  const crouchBtn = document.getElementById('crouchBtn');
   const interactBtn = document.getElementById('interactBtnMobile');
 
   const JOY_RADIUS = 45;
@@ -82,6 +83,18 @@ export function setupTouchControls(player, story) {
   jumpBtn.addEventListener('touchend', (e) => {
     e.preventDefault();
     player.keys['Space'] = false;
+  }, { passive: false });
+
+  crouchBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    player.keys['ShiftLeft'] = true;
+  }, { passive: false });
+  crouchBtn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    player.keys['ShiftLeft'] = false;
+  }, { passive: false });
+  crouchBtn.addEventListener('touchcancel', (e) => {
+    player.keys['ShiftLeft'] = false;
   }, { passive: false });
 
   interactBtn.addEventListener('touchstart', (e) => {
